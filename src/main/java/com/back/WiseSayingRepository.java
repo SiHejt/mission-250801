@@ -45,7 +45,7 @@ public class WiseSayingRepository {
         if (files == null) return list;
 
         for (File file : files) {
-            if (file.getName().endsWith(".json")) {
+            if (file.getName().endsWith(".json") && !file.getName().equals("data.json")) {
                 WiseSaying ws = load(file);
                 if (ws != null) {
                     list.add(ws);
