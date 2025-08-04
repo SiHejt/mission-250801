@@ -38,24 +38,24 @@ public class WiseSayingRepository {
     }
 
     public List<WiseSaying> loadAll() {
-        List<WiseSaying> list = new ArrayList<>();
+        List<WiseSaying> sayings = new ArrayList<>();
         File dir = new File(baseDir);
         File[] files = dir.listFiles();
 
-        if (files == null) return list;
+        if (files == null) return sayings;
 
         for (File file : files) {
             if (file.getName().endsWith(".json") && !file.getName().equals("data.json")) {
                 WiseSaying ws = load(file);
                 if (ws != null) {
-                    list.add(ws);
+                    sayings.add(ws);
                     if (ws.id > WiseSaying.lastId) {
                         WiseSaying.lastId = ws.id;
                     }
                 }
             }
         }
-        return list;
+        return sayings;
     }
 
     private WiseSaying load(File file) {
@@ -96,18 +96,18 @@ public class WiseSayingRepository {
         return str.replace("\\", "\\\\").replace("\"", "\\\"");
     }
 
-    public void buildDataJson(List<WiseSaying> list) {
+    public void buildDataJson(List<WiseSaying> sayings) {
         try (FileWriter fw = new FileWriter(baseDir + "/data.json")) {
             fw.write("[\n");
 
-            for (int i = 0; i < list.size(); i++) {
-                WiseSaying ws = list.get(i);
+            for (int i = 0; i < sayings.size(); i++) {
+                WiseSaying wiseSaying = sayings.get(i);
                 fw.write("  {\n");
-                fw.write("    \"id\": " + ws.id + ",\n");
-                fw.write("    \"content\": \"" + escape(ws.content) + "\",\n");
-                fw.write("    \"author\": \"" + escape(ws.author) + "\"\n");
+                fw.write("    \"id\": " + wiseSaying.id + ",\n");
+                fw.write("    \"content\": \"" + escape(wiseSaying.content) + "\",\n");
+                fw.write("    \"author\": \"" + escape(wiseSaying.author) + "\"\n");
                 fw.write("  }");
-                if (i != list.size() -1) {
+                if (i != sayings.size() -1) {
                     fw.write(",\n");
                 } else {
                     fw.write("\n");
